@@ -2,1059 +2,149 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Saala Saand">
-<meta name="theme-color" content="#0a0a0a">
-<title>Saala Saand</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRIMAL</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root {
-  --bg: #0a0a0a;
-  --bg2: #141414;
-  --bg3: #1e1e1e;
-  --bg4: #252525;
-  --border: #2a2a2a;
-  --border2: #333;
-  --text: #f0f0f0;
-  --text2: #999;
-  --text3: #666;
-  --accent: #e8ff5a;
-  --accent2: #c8df30;
-  --green: #4ade80;
-  --green-bg: #0d2b1a;
-  --red: #f87171;
-  --red-bg: #2b0d0d;
-  --orange: #fb923c;
-  --orange-bg: #2b1508;
-  --blue: #60a5fa;
-  --blue-bg: #0d1b2b;
-  --purple: #a78bfa;
-  --purple-bg: #1a0d2b;
-  --safe-top: env(safe-area-inset-top);
-  --safe-bot: env(safe-area-inset-bottom);
-}
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; }
+  --bg: #0b0b0f;
+  --bg2: #12121a;
+  --bg3: #1a1a24;
+  --border: rgba(255,255,255,0.06);
 
-/* LAYOUT */
-#app { display: flex; flex-direction: column; height: 100%; height: 100dvh; }
-#header {
-  padding: calc(var(--safe-top) + 14px) 18px 14px;
+  --text: #ffffff;
+  --text2: #a1a1aa;
+
+  --accent: #7c5cff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
   background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 100;
+  color: var(--text);
 }
-#header-title { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; color: var(--accent); }
-#header-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
-#content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(var(--safe-bot) + 80px); }
-#tabbar {
-  display: flex; background: var(--bg2); border-top: 1px solid var(--border);
-  padding-bottom: var(--safe-bot);
-  position: sticky; bottom: 0;
+
+#app {
+  padding: 20px;
 }
-.tab-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 4px 8px; gap: 4px; border: none; background: none; color: var(--text3); font-size: 10px; font-weight: 500; cursor: pointer; transition: color 0.15s; }
-.tab-btn.active { color: var(--accent); }
-.tab-icon { font-size: 22px; line-height: 1; }
 
-/* SCREENS */
-.screen { display: none; padding: 16px; }
-.screen.active { display: block; }
+h1 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
 
-/* CARDS */
-.card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 12px; }
-.card-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-.card-sub { font-size: 13px; color: var(--text2); line-height: 1.55; }
-.section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin: 18px 0 8px; }
+.card {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 16px;
 
-/* METRICS GRID */
-.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
-.met { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 10px 10px; }
-.met-label { font-size: 10px; color: var(--text3); margin-bottom: 3px; }
-.met-value { font-size: 16px; font-weight: 600; color: var(--text); }
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.05);
 
-/* PHASE TABS */
-.phase-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
-.phase-tab { flex: 1; padding: 9px; border: 1px solid var(--border2); border-radius: 10px; background: var(--bg2); color: var(--text2); font-size: 13px; font-weight: 500; text-align: center; cursor: pointer; }
-.phase-tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+  transition: all 0.2s ease;
+}
 
-/* WEEK GRID */
-.wgrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 14px; }
-.day-cell { border: 1px solid var(--border); border-radius: 10px; padding: 7px 2px; text-align: center; cursor: pointer; background: var(--bg2); }
-.day-cell.rest { background: var(--bg3); }
-.day-cell.selected { border: 2px solid var(--accent); }
-.day-lbl { font-size: 9px; color: var(--text3); margin-bottom: 2px; }
-.day-type { font-size: 10px; font-weight: 600; color: var(--text); line-height: 1.2; }
-.day-type.rest { color: var(--text3); font-weight: 400; }
+.card:hover {
+  transform: translateY(-3px);
+}
 
-/* EXERCISE ROW */
-.ex-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; padding: 11px 0; border-bottom: 1px solid var(--border); }
-.ex-row:last-child { border-bottom: none; }
-.ex-name { font-size: 13px; font-weight: 600; color: var(--text); }
-.ex-note { font-size: 12px; color: var(--text2); margin-top: 3px; line-height: 1.45; }
-.ex-sets { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; text-align: right; }
-.badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 5px; margin-left: 5px; vertical-align: middle; }
-.b-fix { background: #2b1508; color: #fb923c; }
-.b-key { background: var(--green-bg); color: var(--green); }
-.b-trap { background: var(--purple-bg); color: var(--purple); }
-.b-swap { background: var(--red-bg); color: var(--red); }
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #7c5cff, #00d4ff);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-/* PNOTE */
-.pnote { background: var(--bg3); border-radius: 10px; padding: 12px; margin-bottom: 14px; font-size: 13px; color: var(--text2); line-height: 1.6; }
+button:active {
+  transform: scale(0.96);
+}
 
-/* STEPS */
-.ch-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
-.ch-row:last-child { margin-bottom: 0; }
-.ch-num { width: 26px; height: 26px; border-radius: 50%; background: var(--bg3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--text); flex-shrink: 0; margin-top: 1px; }
-.ch-num.neg { background: var(--red-bg); color: var(--red); border-color: #5b1515; }
-.ch-num.pos { background: var(--green-bg); color: var(--green); border-color: #155b2b; }
-.ch-text { font-size: 13px; color: var(--text); line-height: 1.55; font-weight: 500; }
-.ch-sub { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.45; }
+.stat {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #7c5cff, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-/* TABLE */
-.ptable { width: 100%; border-collapse: collapse; font-size: 13px; }
-.ptable th { font-size: 11px; font-weight: 500; color: var(--text3); text-align: left; padding: 6px 0 4px; border-bottom: 1px solid var(--border); }
-.ptable td { padding: 9px 6px 9px 0; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; line-height: 1.5; }
-.ptable td:first-child { font-weight: 600; }
-.ptable tr:last-child td { border-bottom: none; }
-.issue-badge { display: inline-block; font-size: 11px; padding: 3px 9px; border-radius: 5px; background: var(--red-bg); color: var(--red); margin-bottom: 10px; }
+#fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c5cff, #00d4ff);
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
 
-/* CARDIO ROWS */
-.crow { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
-.crow:last-child { border-bottom: none; }
-.ctag { min-width: 72px; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; text-align: center; flex-shrink: 0; }
-.cinfo .ct { font-size: 13px; font-weight: 600; color: var(--text); }
-.cinfo .cs { font-size: 12px; color: var(--text2); margin-top: 3px; line-height: 1.5; }
-
-/* FP STEPS */
-.fp-box { background: var(--bg3); border-radius: 10px; padding: 12px; margin-bottom: 12px; }
-.fp-step { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 9px; }
-.fp-step:last-child { margin-bottom: 0; }
-.fp-num { width: 22px; height: 22px; border-radius: 50%; background: var(--green-bg); border: 1px solid #155b2b; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--green); flex-shrink: 0; }
-.fp-text { font-size: 13px; color: var(--text); line-height: 1.5; }
-
-/* MUSCLE FREQ */
-.mfreq { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.mf-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg2); }
-.mf-name { font-size: 13px; color: var(--text); flex: 1; }
-.mf-dots { display: flex; gap: 3px; }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border2); }
-.dot.on { background: var(--green); }
-.mf-count { font-size: 12px; color: var(--text2); min-width: 28px; text-align: right; }
-
-/* ===== LOGGER SCREEN ===== */
-.log-date-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-.log-date-btn { width: 38px; height: 38px; border-radius: 10px; background: var(--bg2); border: 1px solid var(--border2); color: var(--text); font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-.log-date-display { flex: 1; text-align: center; }
-.log-date-main { font-size: 17px; font-weight: 700; color: var(--text); }
-.log-date-sub { font-size: 12px; color: var(--text3); margin-top: 1px; }
-.log-workout-header { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; margin-bottom: 12px; }
-.log-day-type { font-size: 13px; font-weight: 700; color: var(--accent); }
-.log-day-focus { font-size: 12px; color: var(--text2); margin-top: 2px; }
-
-.log-ex-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
-.log-ex-header { padding: 12px 14px 10px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-.log-ex-name { font-size: 14px; font-weight: 700; color: var(--text); }
-.log-ex-target { font-size: 12px; color: var(--text3); margin-top: 3px; }
-.log-sets-area { padding: 10px 14px 12px; }
-.log-set-row { display: grid; grid-template-columns: 30px 1fr 1fr 36px; gap: 6px; align-items: center; margin-bottom: 7px; }
-.set-num { font-size: 12px; font-weight: 600; color: var(--text3); text-align: center; }
-.set-input { background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; padding: 8px 10px; color: var(--text); font-size: 15px; font-weight: 600; text-align: center; width: 100%; -webkit-appearance: none; }
-.set-input:focus { outline: none; border-color: var(--accent); }
-.set-input::placeholder { color: var(--text3); font-weight: 400; font-size: 13px; }
-.set-done-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--bg3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; color: var(--text3); flex-shrink: 0; }
-.set-done-btn.done { background: var(--green-bg); border-color: #155b2b; color: var(--green); }
-.log-add-set { width: 100%; padding: 8px; background: none; border: 1px dashed var(--border2); border-radius: 8px; color: var(--text3); font-size: 13px; cursor: pointer; margin-top: 4px; }
-.log-comment-row { padding: 0 14px 12px; }
-.log-comment-input { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; color: var(--text); font-size: 13px; resize: none; height: 52px; }
-.log-comment-input::placeholder { color: var(--text3); }
-.log-comment-input:focus { outline: none; border-color: var(--accent); }
-.log-set-input-labels { display: grid; grid-template-columns: 30px 1fr 1fr 36px; gap: 6px; margin-bottom: 4px; padding: 0 0 2px; }
-.log-set-input-labels span { font-size: 10px; color: var(--text3); font-weight: 500; text-align: center; letter-spacing: 0.05em; }
-.rest-day-log { text-align: center; padding: 32px 16px; }
-.rest-day-icon { font-size: 48px; margin-bottom: 12px; }
-.rest-day-txt { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-.rest-day-note { font-size: 13px; color: var(--text2); line-height: 1.6; }
-.save-btn { width: 100%; padding: 15px; background: var(--accent); border: none; border-radius: 14px; color: #000; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 14px; }
-.save-btn:active { opacity: 0.85; }
-.save-success { text-align: center; font-size: 13px; color: var(--green); margin-top: 8px; display: none; }
-
-/* ===== HISTORY SCREEN ===== */
-.history-empty { text-align: center; padding: 60px 20px; color: var(--text3); font-size: 15px; }
-.hist-day { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; overflow: hidden; cursor: pointer; }
-.hist-day-header { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; }
-.hist-day-date { font-size: 14px; font-weight: 700; color: var(--text); }
-.hist-day-type { font-size: 12px; color: var(--text2); margin-top: 2px; }
-.hist-day-meta { text-align: right; }
-.hist-day-count { font-size: 13px; font-weight: 600; color: var(--accent); }
-.hist-day-sets { font-size: 11px; color: var(--text3); margin-top: 1px; }
-.hist-expand { padding: 0 14px 12px; display: none; }
-.hist-expand.open { display: block; }
-.hist-ex { margin-bottom: 10px; }
-.hist-ex-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-.hist-set-row { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; }
-.hist-set-chip { background: var(--bg3); border-radius: 6px; padding: 4px 10px; font-size: 12px; color: var(--text); font-weight: 500; }
-.hist-set-chip.done { border: 1px solid #155b2b; background: var(--green-bg); color: var(--green); }
-.hist-comment { font-size: 12px; color: var(--text3); margin-top: 4px; font-style: italic; }
-.hist-filter { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
-.hist-filter::-webkit-scrollbar { display: none; }
-.hist-filter-btn { padding: 6px 12px; border-radius: 8px; background: var(--bg2); border: 1px solid var(--border2); color: var(--text2); font-size: 12px; font-weight: 500; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
-.hist-filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
-.del-btn { float: right; background: var(--red-bg); color: var(--red); border: 1px solid #5b1515; border-radius: 7px; padding: 4px 10px; font-size: 11px; cursor: pointer; }
-
-/* ===== STATS SCREEN ===== */
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-.stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
-.stat-label { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
-.stat-value { font-size: 26px; font-weight: 700; color: var(--accent); }
-.stat-unit { font-size: 13px; color: var(--text2); font-weight: 400; }
-.pr-list { }
-.pr-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
-.pr-row:last-child { border-bottom: none; }
-.pr-ex { font-size: 13px; color: var(--text); font-weight: 500; flex: 1; }
-.pr-val { font-size: 13px; font-weight: 700; color: var(--green); }
-.streak-bar { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
-.streak-dot { width: 12px; height: 12px; border-radius: 3px; background: var(--border); }
-.streak-dot.done { background: var(--accent); }
-.streak-dot.rest { background: var(--bg3); border: 1px solid var(--border2); }
-
-/* Scrollbar hidden globally */
-::-webkit-scrollbar { display: none; }
-* { scrollbar-width: none; }
 </style>
 </head>
 <body>
+
 <div id="app">
-  <div id="header">
-    <div>
-      <div id="header-title">🐂 Saala Saand</div>
-      <div id="header-sub">UL/UL/Full · 5 days/week</div>
-    </div>
-    <div id="header-right"></div>
+  <h1>PRIMAL</h1>
+
+  <div class="card">
+    <div>Workouts Logged</div>
+    <div class="stat" id="workouts">0</div>
   </div>
-  <div id="content">
-    <!-- SCREENS INJECTED BY JS -->
+
+  <div class="card">
+    <div>Current Streak</div>
+    <div class="stat" id="streak">0</div>
   </div>
-  <div id="tabbar">
-    <button class="tab-btn active" onclick="switchTab('log')" id="tab-log">
-      <span class="tab-icon">🏋️</span>Log
-    </button>
-    <button class="tab-btn" onclick="switchTab('plan')" id="tab-plan">
-      <span class="tab-icon">📋</span>Plan
-    </button>
-    <button class="tab-btn" onclick="switchTab('history')" id="tab-history">
-      <span class="tab-icon">📓</span>History
-    </button>
-    <button class="tab-btn" onclick="switchTab('stats')" id="tab-stats">
-      <span class="tab-icon">📈</span>Stats
-    </button>
-  </div>
+
+  <button onclick="logWorkout()">💾 Log Workout</button>
+  <button onclick="analyseWorkout()" style="margin-top:10px;">🧠 Analyse Workout</button>
 </div>
 
+<div id="fab">+</div>
+
 <script>
-// ============================================================
-//  DATA
-// ============================================================
-const PHASES = [
-  {
-    label: "Phase 1 — Cut",
-    note: "Fat loss phase. Train hard, keep rest periods tight. Cardio 3x/week — after Mon or Tue lifting, Thu after upper B, and one outdoor walk on Wed or Sat. Every session starts with 7 min posture warm-up.",
-    days: [
-      { l:"Mon", t:"Upper A", rst:false, focus:"Chest · Back · Traps · Posture", bc:"#0C447C", sub:"6 exercises incl. warm-up · ~60 min",
-        ex:[
-          {n:"Cable face pull (rope, eye level)", note:"Posture warm-up — always first. Elbows HIGH, split rope at face, 1 sec hold.", s:"3 × 20", tag:"fix"},
-          {n:"Incline barbell press", note:"Upper chest priority. 3 sec negative. Log the weight.", s:"4 × 6–8", tag:"key"},
-          {n:"Weighted pull-ups", note:"Lat width. Add weight once you hit 8 clean reps.", s:"4 × 5–7", tag:"key"},
-          {n:"Barbell shrug (heavy)", note:"2 sec squeeze at top. Go heavy. Trap priority.", s:"4 × 8–10", tag:"trap"},
-          {n:"Seated cable row (wide grip)", note:"Retract scapula fully at the end of each rep. Mid back.", s:"3 × 10–12", tag:"fix"},
-          {n:"Cable lateral raise (unilateral)", note:"Side delt width. Slow, strict — no body swing.", s:"3 × 12–15"}
-        ]
-      },
-      { l:"Tue", t:"Lower A", rst:false, focus:"Quads · Hamstrings · Glutes · Knee fix", bc:"#633806", sub:"6 exercises incl. warm-up · ~60 min",
-        ex:[
-          {n:"Hip abduction machine", note:"Knee fix warm-up. Slow reps, full range. Before every leg session.", s:"3 × 15–20", tag:"fix"},
-          {n:"Glute bridge (barbell)", note:"Hip extension activation. Drives glute med. Replaces clamshells.", s:"3 × 15", tag:"fix"},
-          {n:"Leg press (high, wide foot placement)", note:"Push knees out over pinky toe every rep. Log the weight.", s:"4 × 8–10", tag:"key"},
-          {n:"Romanian deadlift (DB or barbell)", note:"3 sec negative. Feel the hamstring stretch at the bottom.", s:"4 × 8–10", tag:"key"},
-          {n:"Bulgarian split squat (DB)", note:"Front knee tracks over pinky toe. Corrects left-right imbalance.", s:"3 × 8–10 each"},
-          {n:"Standing calf raise", note:"Full ROM. Pause at bottom 1 sec.", s:"4 × 15–20"}
-        ]
-      },
-      { l:"Wed", t:"Rest", rst:true, note:"Full rest or 30 min outdoor walk (fasted morning). Stretch hip flexors and chest. Still hit 175 g protein today." },
-      { l:"Thu", t:"Upper B", rst:false, focus:"Shoulders · Back · Traps · Arms", bc:"#085041", sub:"6 exercises incl. warm-up · ~60 min",
-        ex:[
-          {n:"Band pull-aparts", note:"Posture warm-up. Arms straight, pull band to chest, squeeze rear delt.", s:"2 × 20", tag:"fix"},
-          {n:"Overhead press (barbell)", note:"Primary delt and upper trap builder. Log every session.", s:"4 × 5–7", tag:"key"},
-          {n:"Barbell row (Pendlay)", note:"Pull bar to lower chest. Full back thickness.", s:"4 × 6–8", tag:"key"},
-          {n:"Rack pull (just above knee)", note:"Heavy upper trap and rhomboid mass. Controlled descent.", s:"4 × 5–6", tag:"trap"},
-          {n:"Rear delt fly (machine or cable)", note:"Elbows slightly bent, lead with elbows back. Posture fix.", s:"3 × 15–20", tag:"fix"},
-          {n:"Barbell curl + tricep pushdown (superset)", note:"Arms at end of session when pre-fatigued.", s:"3 × 10 each"}
-        ]
-      },
-      { l:"Fri", t:"Lower B", rst:false, focus:"Quads · Posterior chain · Hip stability", bc:"#633806", sub:"6 exercises incl. warm-up · ~60 min",
-        ex:[
-          {n:"Hip abduction machine", note:"Glute med activation before heavy lower work.", s:"3 × 15", tag:"fix"},
-          {n:"Trap bar deadlift", note:"Safer than conventional. Feet hip-width, drive floor away, chest tall.", s:"4 × 5–6", tag:"key"},
-          {n:"Hack squat (machine)", note:"Feet mid-platform, push knees out. Deep range of motion.", s:"4 × 8–10", tag:"key"},
-          {n:"Walking lunges (DB)", note:"Push knees out actively. Glute med engagement each step.", s:"3 × 10 each"},
-          {n:"Leg extension + lying leg curl (superset)", note:"Quad and hamstring finisher.", s:"3 × 12 each"},
-          {n:"Seated calf raise", note:"Slow, full range.", s:"4 × 15"}
-        ]
-      },
-      { l:"Sat", t:"Full body", rst:false, focus:"Compound volume + weak points + traps", bc:"#3C3489", sub:"5 exercises · Moderate intensity · ~55 min",
-        ex:[
-          {n:"Flat barbell bench press", note:"Moderate weight. Focus on chest contraction and full stretch.", s:"4 × 8–10"},
-          {n:"Lat pulldown (wide grip)", note:"Lat width from different angle than pull-ups.", s:"4 × 8–10", tag:"key"},
-          {n:"DB shrug + cable face pull (superset)", note:"Traps and posture together. Never skip this.", s:"4 × 10 + 20", tag:"trap"},
-          {n:"Leg press (moderate weight)", note:"Active leg recovery. Not max effort.", s:"3 × 12"},
-          {n:"Incline DB curl", note:"Full bicep stretch at the bottom. Slow and controlled.", s:"3 × 10–12"}
-        ]
-      },
-      { l:"Sun", t:"Rest", rst:true, note:"Full rest. Weigh yourself fasted. Log weight. Review last week's training log. Plan next week's lifts." }
-    ]
-  },
-  {
-    label: "Phase 2 — Build",
-    note: "Lean bulk phase. 200 kcal above maintenance. Beat last week on every compound — that is the entire point of this phase. Cardio drops to 2x/week. Gain no more than 0.4 kg per week.",
-    days: [
-      { l:"Mon", t:"Upper A", rst:false, focus:"Chest · Back · Traps · Posture", bc:"#0C447C", sub:"6 exercises incl. warm-up · ~65 min",
-        ex:[
-          {n:"Cable face pull (rope, eye level)", note:"Always first. Still a priority even in bulk.", s:"3 × 20", tag:"fix"},
-          {n:"Incline barbell press", note:"Heavier than Phase 1. 5×5 strength focus.", s:"5 × 5", tag:"key"},
-          {n:"Weighted pull-ups", note:"Add belt weight. Target 5–6 reps with load.", s:"5 × 5–6", tag:"key"},
-          {n:"Barbell shrug", note:"Go heavier every week. This is your primary trap builder.", s:"5 × 6–8", tag:"trap"},
-          {n:"Cable row (narrow grip)", note:"Mid back thickness.", s:"4 × 8–10", tag:"fix"},
-          {n:"Cable lateral raise", note:"4 sets now. Side delts define the V-taper.", s:"4 × 12–15"}
-        ]
-      },
-      { l:"Tue", t:"Lower A", rst:false, focus:"Quads · Hamstrings · Glutes", bc:"#633806", sub:"6 exercises incl. warm-up · ~65 min",
-        ex:[
-          {n:"Hip abduction machine", note:"Still doing this. Knock knees take months to fully correct.", s:"3 × 15–20", tag:"fix"},
-          {n:"Barbell glute bridge", note:"Heavier than Phase 1.", s:"3 × 12–15", tag:"fix"},
-          {n:"Leg press", note:"5 sets now. Beat last week every session.", s:"5 × 8–10", tag:"key"},
-          {n:"Romanian deadlift", note:"Heavier loads. Still 3 sec negative.", s:"4 × 8–10", tag:"key"},
-          {n:"Hack squat", note:"Heavy quad overload.", s:"4 × 8–10"},
-          {n:"Calf raise superset (seated + standing)", note:"Full calf development.", s:"4 × 15 each"}
-        ]
-      },
-      { l:"Wed", t:"Rest", rst:true, note:"Full rest. Eat at surplus today too — muscles grow on rest days. Light stretch and 20 min walk." },
-      { l:"Thu", t:"Upper B", rst:false, focus:"Shoulders · Back · Traps · Arms", bc:"#085041", sub:"6 exercises incl. warm-up · ~65 min",
-        ex:[
-          {n:"Band pull-aparts", note:"Warm-up always.", s:"2 × 20", tag:"fix"},
-          {n:"Overhead press (barbell)", note:"5×5. Log every session. This is your primary shoulder mass builder.", s:"5 × 5", tag:"key"},
-          {n:"Barbell row", note:"Heavier than Phase 1. Pull explosively, lower controlled.", s:"4 × 6–8", tag:"key"},
-          {n:"Rack pull (above knee, very heavy)", note:"Trap thickness. Heaviest trap work of the week.", s:"4 × 4–5", tag:"trap"},
-          {n:"Rear delt fly", note:"Posture maintenance.", s:"4 × 15", tag:"fix"},
-          {n:"Barbell curl + skull crushers (superset)", note:"Arm mass. 4 sets now.", s:"4 × 8 each"}
-        ]
-      },
-      { l:"Fri", t:"Lower B", rst:false, focus:"Quads · Posterior chain · Calves", bc:"#633806", sub:"6 exercises · ~65 min",
-        ex:[
-          {n:"Hip abduction machine", note:"Glute med warm-up.", s:"3 × 15", tag:"fix"},
-          {n:"Trap bar deadlift", note:"Max effort. Heaviest lower session of the week.", s:"4 × 4–5", tag:"key"},
-          {n:"Hack squat (machine)", note:"Heavy. Go deeper than Phase 1.", s:"4 × 8–10", tag:"key"},
-          {n:"Bulgarian split squat (DB)", note:"Heavier than Phase 1.", s:"4 × 8 each"},
-          {n:"Lying leg curl", note:"", s:"3 × 10–12"},
-          {n:"Standing calf raise", note:"", s:"4 × 15–20"}
-        ]
-      },
-      { l:"Sat", t:"Full body", rst:false, focus:"Volume + weak points + traps", bc:"#3C3489", sub:"5 exercises · Moderate intensity · ~55 min",
-        ex:[
-          {n:"Flat bench press", note:"Volume work. Controlled tempo.", s:"4 × 8–10"},
-          {n:"Weighted lat pulldown", note:"", s:"4 × 8–10", tag:"key"},
-          {n:"DB shrug + cable face pull (superset)", note:"5 sets now. Trap and posture combo.", s:"5 × 10 + 20", tag:"trap"},
-          {n:"Leg press (light)", note:"Active leg recovery.", s:"3 × 15"},
-          {n:"Hammer curl + tricep pushdown (superset)", note:"Arm finisher.", s:"3 × 12 each"}
-        ]
-      },
-      { l:"Sun", t:"Rest", rst:true, note:"Full rest. Weigh fasted. If gaining more than 0.4 kg/week, trim 100–150 kcal. Progress photo every 4 weeks." }
-    ]
-  }
-];
+let workouts = 0;
+let streak = 0;
 
-// ============================================================
-//  STATE
-// ============================================================
-let currentTab = 'log';
-let logPhase = 0;
-let logDayIdx = todayDayIdx();
-let planPhase = 0;
-let planDay = 0;
-let histFilter = 'all';
-let expandedHist = null;
+function logWorkout() {
+  workouts++;
+  streak++;
 
-function todayDayIdx() {
-  const d = new Date().getDay(); // 0=Sun,1=Mon...6=Sat
-  const map = [6,0,1,2,3,4,5]; // Sun→6(rest), Mon→0, Tue→1...
-  return map[d];
-}
+  document.getElementById('workouts').innerText = workouts;
+  document.getElementById('streak').innerText = streak;
 
-// ============================================================
-//  LOCAL STORAGE HELPERS
-// ============================================================
-function getKey(dateStr) { return 'ss_log_' + dateStr; }
+  alert("🔥 Streak +1 — You're unstoppable.");
 
-function saveLog(dateStr, data) {
-  localStorage.setItem(getKey(dateStr), JSON.stringify(data));
-}
-
-function loadLog(dateStr) {
-  const raw = localStorage.getItem(getKey(dateStr));
-  return raw ? JSON.parse(raw) : null;
-}
-
-function getAllLogs() {
-  const logs = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    if (k.startsWith('ss_log_')) {
-      const dateStr = k.replace('ss_log_', '');
-      logs.push({ dateStr, data: JSON.parse(localStorage.getItem(k)) });
-    }
-  }
-  return logs.sort((a,b) => b.dateStr.localeCompare(a.dateStr));
-}
-
-function deleteLog(dateStr) {
-  localStorage.removeItem(getKey(dateStr));
-}
-
-// ============================================================
-//  UTILS
-// ============================================================
-function dateFromOffset(offset) {
-  const d = new Date();
-  d.setDate(d.getDate() + offset);
-  return d;
-}
-
-let logDateOffset = 0;
-
-function getLogDate() {
-  return dateFromOffset(logDateOffset);
-}
-
-function fmtDate(d) {
-  return d.toISOString().split('T')[0];
-}
-
-function fmtDateNice(d) {
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const today = new Date(); today.setHours(0,0,0,0);
-  const target = new Date(d); target.setHours(0,0,0,0);
-  const diff = Math.round((target - today) / 86400000);
-  let rel = '';
-  if (diff === 0) rel = 'Today';
-  else if (diff === -1) rel = 'Yesterday';
-  else if (diff === 1) rel = 'Tomorrow';
-  else rel = days[d.getDay()];
-  return { main: rel, sub: days[d.getDay()] + ', ' + d.getDate() + ' ' + months[d.getMonth()] };
-}
-
-function dayForDate(d) {
-  const dow = d.getDay(); // 0=Sun,1=Mon...6=Sat
-  const map = [6,0,1,2,3,4,5];
-  return map[dow];
-}
-
-function tagBadge(tag) {
-  const cl = { fix:'b-fix', key:'b-key', trap:'b-trap', swap:'b-swap' };
-  const lb = { fix:'posture', key:'priority', trap:'traps', swap:'swapped' };
-  if (!tag) return '';
-  return `<span class="badge ${cl[tag]}">${lb[tag]}</span>`;
-}
-
-// ============================================================
-//  TAB SWITCHER
-// ============================================================
-function switchTab(tab) {
-  currentTab = tab;
-  ['log','plan','history','stats'].forEach(t => {
-    document.getElementById('tab-' + t).classList.toggle('active', t === tab);
-  });
-  renderContent();
-}
-
-function renderContent() {
-  const c = document.getElementById('content');
-  if (currentTab === 'log') c.innerHTML = renderLog();
-  else if (currentTab === 'plan') c.innerHTML = renderPlan();
-  else if (currentTab === 'history') c.innerHTML = renderHistory();
-  else if (currentTab === 'stats') c.innerHTML = renderStats();
-}
-
-// ============================================================
-//  LOG SCREEN
-// ============================================================
-function renderLog() {
-  const date = getLogDate();
-  const dateStr = fmtDate(date);
-  const dayIdx = dayForDate(date);
-  const day = PHASES[logPhase].days[dayIdx];
-  const { main, sub } = fmtDateNice(date);
-  const saved = loadLog(dateStr) || {};
-
-  let html = `<div class="screen active" id="screen-log">`;
-  
-  // Date nav
-  html += `<div class="log-date-bar">
-    <button class="log-date-btn" onclick="shiftLogDate(-1)">‹</button>
-    <div class="log-date-display">
-      <div class="log-date-main">${main}</div>
-      <div class="log-date-sub">${sub}</div>
-    </div>
-    <button class="log-date-btn" onclick="shiftLogDate(1)">›</button>
-  </div>`;
-
-  // Phase selector (small)
-  html += `<div class="phase-tabs" style="margin-bottom:12px;">
-    <button class="phase-tab ${logPhase===0?'active':''}" onclick="setLogPhase(0)">Phase 1 – Cut</button>
-    <button class="phase-tab ${logPhase===1?'active':''}" onclick="setLogPhase(1)">Phase 2 – Build</button>
-  </div>`;
-
-  if (day.rst) {
-    html += `<div class="rest-day-log">
-      <div class="rest-day-icon">😴</div>
-      <div class="rest-day-txt">${day.l} — Rest Day</div>
-      <div class="rest-day-note">${day.note}</div>
-    </div>`;
-    html += `</div>`;
-    return html;
-  }
-
-  // Workout header
-  html += `<div class="log-workout-header">
-    <div class="log-day-type">${day.l} — ${day.t}</div>
-    <div class="log-day-focus">${day.focus} · ${day.sub}</div>
-  </div>`;
-
-  // Exercises
-  day.ex.forEach((ex, ei) => {
-    const exKey = 'ex_' + ei;
-    const exData = saved[exKey] || { sets: [{ kg: '', reps: '', done: false }], comment: '' };
-    
-    html += `<div class="log-ex-card">
-      <div class="log-ex-header">
-        <div>
-          <div class="log-ex-name">${ex.n}${tagBadge(ex.tag)}</div>
-          <div class="log-ex-target">${ex.s}${ex.note ? ' · ' + ex.note : ''}</div>
-        </div>
-      </div>
-      <div class="log-sets-area">
-        <div class="log-set-input-labels">
-          <span>SET</span><span>KG</span><span>REPS</span><span>✓</span>
-        </div>`;
-
-    exData.sets.forEach((set, si) => {
-      html += `<div class="log-set-row" id="setrow_${ei}_${si}">
-        <div class="set-num">${si + 1}</div>
-        <input class="set-input" type="number" inputmode="decimal" placeholder="kg" value="${set.kg}" onchange="updateSet(${ei},${si},'kg',this.value)">
-        <input class="set-input" type="number" inputmode="numeric" placeholder="reps" value="${set.reps}" onchange="updateSet(${ei},${si},'reps',this.value)">
-        <button class="set-done-btn ${set.done ? 'done' : ''}" onclick="toggleSetDone(${ei},${si})">✓</button>
-      </div>`;
-    });
-
-    html += `<button class="log-add-set" onclick="addSet(${ei})">+ Add set</button>
-      </div>
-      <div class="log-comment-row">
-        <textarea class="log-comment-input" placeholder="Notes / comments for this exercise…" onchange="updateComment(${ei},this.value)">${exData.comment || ''}</textarea>
-      </div>
-    </div>`;
-  });
-
-  html += `<button class="save-btn" onclick="saveWorkout()">💾 Save Workout</button>
-    <div class="save-success" id="save-success">✅ Workout saved!</div>
-  </div>`;
-
-  return html;
-}
-
-function shiftLogDate(d) {
-  logDateOffset += d;
-  renderContent();
-}
-
-function setLogPhase(p) {
-  logPhase = p;
-  renderContent();
-}
-
-function getCurrentLogData() {
-  const date = getLogDate();
-  const dateStr = fmtDate(date);
-  return { dateStr, data: loadLog(dateStr) || {} };
-}
-
-function updateSet(ei, si, field, val) {
-  const { dateStr, data } = getCurrentLogData();
-  const exKey = 'ex_' + ei;
-  if (!data[exKey]) data[exKey] = { sets: [], comment: '' };
-  while (data[exKey].sets.length <= si) data[exKey].sets.push({ kg: '', reps: '', done: false });
-  data[exKey].sets[si][field] = val;
-  saveLog(dateStr, data);
-}
-
-function toggleSetDone(ei, si) {
-  const { dateStr, data } = getCurrentLogData();
-  const exKey = 'ex_' + ei;
-  if (!data[exKey]) data[exKey] = { sets: [], comment: '' };
-  while (data[exKey].sets.length <= si) data[exKey].sets.push({ kg: '', reps: '', done: false });
-  data[exKey].sets[si].done = !data[exKey].sets[si].done;
-  saveLog(dateStr, data);
-  // Just update the button without full re-render
-  const btn = document.querySelector(`#setrow_${ei}_${si} .set-done-btn`);
-  if (btn) btn.classList.toggle('done', data[exKey].sets[si].done);
-}
-
-function addSet(ei) {
-  const { dateStr, data } = getCurrentLogData();
-  const exKey = 'ex_' + ei;
-  const date = getLogDate();
-  const dayIdx = dayForDate(date);
-  const day = PHASES[logPhase].days[dayIdx];
-  if (!data[exKey]) data[exKey] = { sets: [], comment: '' };
-  data[exKey].sets.push({ kg: '', reps: '', done: false });
-  saveLog(dateStr, data);
-  renderContent(); // re-render to show new set
-}
-
-function updateComment(ei, val) {
-  const { dateStr, data } = getCurrentLogData();
-  const exKey = 'ex_' + ei;
-  if (!data[exKey]) data[exKey] = { sets: [], comment: '' };
-  data[exKey].comment = val;
-  saveLog(dateStr, data);
-}
-
-function saveWorkout() {
-  // Data is already auto-saved. Just mark as "saved" with a timestamp and show confirmation.
-  const { dateStr, data } = getCurrentLogData();
-  const date = getLogDate();
-  const dayIdx = dayForDate(date);
-  const day = PHASES[logPhase].days[dayIdx];
-  data._meta = { dayType: day.t, focus: day.focus, phase: logPhase, savedAt: new Date().toISOString() };
-  saveLog(dateStr, data);
-  const el = document.getElementById('save-success');
-  if (el) { el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 2500); }
-}
-
-// ============================================================
-//  PLAN SCREEN
-// ============================================================
-function renderPlan() {
-  let html = `<div class="screen active" id="screen-plan">`;
-
-  // Nav tabs
-  html += `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
-    <button class="phase-tab ${planPhase===0?'active':''} " style="flex:none;padding:7px 13px;font-size:12px;" onclick="setPlanPhase(0)">Overview</button>
-    <button class="phase-tab ${planPhase===1?'active':''}" style="flex:none;padding:7px 13px;font-size:12px;" onclick="setPlanPhase(1)">Schedule</button>
-    <button class="phase-tab ${planPhase===2?'active':''}" style="flex:none;padding:7px 13px;font-size:12px;" onclick="setPlanPhase(2)">Face Pull</button>
-    <button class="phase-tab ${planPhase===3?'active':''}" style="flex:none;padding:7px 13px;font-size:12px;" onclick="setPlanPhase(3)">Posture</button>
-    <button class="phase-tab ${planPhase===4?'active':''}" style="flex:none;padding:7px 13px;font-size:12px;" onclick="setPlanPhase(4)">Cardio</button>
-    <button class="phase-tab ${planPhase===5?'active':''}" style="flex:none;padding:7px 13px;font-size:12px;" onclick="setPlanPhase(5)">Rules</button>
-  </div>`;
-
-  if (planPhase === 0) html += renderPlanOverview();
-  else if (planPhase === 1) html += renderPlanSchedule();
-  else if (planPhase === 2) html += renderFacePull();
-  else if (planPhase === 3) html += renderPosture();
-  else if (planPhase === 4) html += renderCardio();
-  else if (planPhase === 5) html += renderRules();
-
-  html += `</div>`;
-  return html;
-}
-
-function setPlanPhase(p) { planPhase = p; renderContent(); }
-
-function renderPlanOverview() {
-  return `
-  <div class="metrics">
-    <div class="met"><div class="met-label">Split</div><div class="met-value" style="font-size:13px;">UL/UL/Full</div></div>
-    <div class="met"><div class="met-label">Gym days</div><div class="met-value">5/wk</div></div>
-    <div class="met"><div class="met-label">Session</div><div class="met-value" style="font-size:13px;">55–65m</div></div>
-  </div>
-  <div class="metrics">
-    <div class="met"><div class="met-label">Cardio</div><div class="met-value">3/wk</div></div>
-    <div class="met"><div class="met-label">Rest</div><div class="met-value">2/wk</div></div>
-    <div class="met"><div class="met-label">Phases</div><div class="met-value" style="font-size:13px;">Cut→Build</div></div>
-  </div>
-  <div class="section-label">Exercise swaps</div>
-  <div class="card">
-    <div class="ch-row"><div class="ch-num" style="background:#2b1508;color:#fb923c;border-color:#5b2510;font-size:14px;">↔</div><div><div class="ch-text">Barbell squat → Leg press + hack squat</div><div class="ch-sub">Same quad and glute stimulus, lower spinal load, easier to learn proper form</div></div></div>
-    <div class="ch-row"><div class="ch-num" style="background:#2b1508;color:#fb923c;border-color:#5b2510;font-size:14px;">↔</div><div><div class="ch-text">Conventional deadlift → Trap bar deadlift or Romanian deadlift</div><div class="ch-sub">Trap bar is safer for beginners, RDL keeps hamstring and glute stimulus without the technical demand</div></div></div>
-    <div class="ch-row"><div class="ch-num" style="background:#2b1508;color:#fb923c;border-color:#5b2510;font-size:14px;">↔</div><div><div class="ch-text">Clamshells + monster walks → Hip abduction machine + glute bridge</div><div class="ch-sub">Hits glute med and hip abductors just as effectively, no band setup needed</div></div></div>
-  </div>
-  <div class="section-label">Two phases</div>
-  <div class="card">
-    <div class="card-title">Phase 1 — Cut (Weeks 1–10)</div>
-    <div class="card-sub" style="margin-top:6px;">Get from ~22% to ~14% body fat. 350 kcal below maintenance. 175 g protein daily. Cardio 3×/week. The model physique is 70% about leanness — this phase is the most important.</div>
-  </div>
-  <div class="card">
-    <div class="card-title">Phase 2 — Lean Bulk (Weeks 11–22)</div>
-    <div class="card-sub" style="margin-top:6px;">200 kcal above maintenance. Max 0.3–0.4 kg weight gain per week. Progressive overload every session. Cardio drops to 2×/week.</div>
-  </div>`;
-}
-
-function renderPlanSchedule() {
-  let schPhase = window._schedPhase || 0;
-  let schDay = window._schedDay !== undefined ? window._schedDay : 0;
-  const day = PHASES[schPhase].days[schDay];
-
-  let html = `<div class="phase-tabs">
-    <button class="phase-tab ${schPhase===0?'active':''}" onclick="setSchedPhase(0)">Phase 1 — Cut</button>
-    <button class="phase-tab ${schPhase===1?'active':''}" onclick="setSchedPhase(1)">Phase 2 — Build</button>
-  </div>
-  <div class="pnote">${PHASES[schPhase].note}</div>
-  <div class="section-label">Tap a day</div>
-  <div class="wgrid">`;
-
-  PHASES[schPhase].days.forEach((d, i) => {
-    const parts = d.t.split(' ');
-    html += `<div class="day-cell ${d.rst?'rest':''} ${i===schDay?'selected':''}" onclick="setSchedDay(${i})">
-      <div class="day-lbl">${d.l}</div>
-      <div class="day-type ${d.rst?'rest':''}">${parts[0]}${parts.length>1?'<br>'+parts.slice(1).join(' '):''}</div>
-    </div>`;
-  });
-
-  html += `</div>`;
-
-  if (day.rst) {
-    html += `<div class="card"><div class="card-title">${day.l} — Rest Day</div><div class="card-sub" style="margin-top:8px;line-height:1.65;">${day.note}</div></div>`;
-  } else {
-    const tagClass = { fix:'b-fix', key:'b-key', trap:'b-trap', swap:'b-swap' };
-    const tagLabel = { fix:'posture', key:'priority', trap:'traps', swap:'swapped' };
-    html += `<div class="card">
-      <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #2a2a2a;">
-        <div style="margin-bottom:6px;"><span style="background:#1a1a2e;color:#60a5fa;font-size:11px;font-weight:600;padding:3px 9px;border-radius:5px;">${day.focus}</span></div>
-        <div class="card-title">${day.l} — ${day.t}</div>
-        <div class="card-sub">${day.sub} · Rest 90–120 sec compounds · 60 sec isolation</div>
-      </div>`;
-    day.ex.forEach(e => {
-      const tagHtml = e.tag ? `<span class="badge ${tagClass[e.tag]}">${tagLabel[e.tag]}</span>` : '';
-      html += `<div class="ex-row">
-        <div>
-          <div class="ex-name">${e.n}${tagHtml}</div>
-          ${e.note ? `<div class="ex-note">${e.note}</div>` : ''}
-        </div>
-        <div class="ex-sets">${e.s}</div>
-      </div>`;
-    });
-    html += `</div>`;
-  }
-
-  return html;
-}
-
-function setSchedPhase(p) { window._schedPhase = p; window._schedDay = 0; renderContent(); }
-function setSchedDay(d) { window._schedDay = d; renderContent(); }
-
-function renderFacePull() {
-  return `
-  <div class="pnote">The cable face pull with rope attachment is one of the most important exercises in your program. It directly counteracts your rounded shoulders and builds the rear delt thickness that creates the 3D shoulder look. Most people do it wrong — here is exactly how to do it right.</div>
-  <div class="section-label">Setup</div>
-  <div class="card">
-    <div class="ch-row"><div class="ch-num">1</div><div><div class="ch-text">Attachment: rope attachment only</div><div class="ch-sub">Not a straight bar, not a single handle. The rope allows your hands to split apart at the end — this is essential.</div></div></div>
-    <div class="ch-row"><div class="ch-num">2</div><div><div class="ch-text">Cable height: set at upper chest to eye level</div><div class="ch-sub">Not low (that turns it into a row). Eye level is the sweet spot — isolates rear delt and external rotators.</div></div></div>
-    <div class="ch-row"><div class="ch-num">3</div><div><div class="ch-text">Weight: light to moderate</div><div class="ch-sub">If you're swinging or elbows drop below shoulder height, the weight is too heavy. Start light and feel the muscle.</div></div></div>
-    <div class="ch-row"><div class="ch-num">4</div><div><div class="ch-text">Stance: stand or half-kneel facing the cable</div><div class="ch-sub">Grab rope, palms facing each other. Step back so there is tension before you begin.</div></div></div>
-  </div>
-  <div class="section-label">How to perform each rep</div>
-  <div class="fp-box">
-    <div class="fp-step"><div class="fp-num">1</div><div class="fp-text">Start: arms extended toward cable, elbows slightly soft, palms facing each other</div></div>
-    <div class="fp-step"><div class="fp-num">2</div><div class="fp-text">Pull the rope toward your face, leading with your elbows — elbows must flare HIGH, above shoulder height, out to the sides</div></div>
-    <div class="fp-step"><div class="fp-num">3</div><div class="fp-text">As the rope reaches your face, split your hands apart — left goes left, right goes right, ending beside your ears</div></div>
-    <div class="fp-step"><div class="fp-num">4</div><div class="fp-text">End position: elbows high and wide, forearms vertical, hands beside ears — this is the external rotation that fixes posture</div></div>
-    <div class="fp-step"><div class="fp-num">5</div><div class="fp-text">Hold 1 sec at peak contraction, then slowly return — 2–3 sec on the way back</div></div>
-  </div>
-  <div class="section-label">Common mistakes</div>
-  <div class="card">
-    <div class="ch-row"><div class="ch-num neg">✕</div><div><div class="ch-text">Elbows dropping below shoulder height</div><div class="ch-sub">Turns it into a rear delt row — you lose the external rotation benefit that fixes posture</div></div></div>
-    <div class="ch-row"><div class="ch-num neg">✕</div><div><div class="ch-text">Not splitting the rope at the end</div><div class="ch-sub">The split at your face creates external rotation — without it you're just doing a high row</div></div></div>
-    <div class="ch-row"><div class="ch-num neg">✕</div><div><div class="ch-text">Using too much weight and swinging</div><div class="ch-sub">You should feel it in the back of your shoulder and upper back, not your biceps or traps</div></div></div>
-    <div class="ch-row"><div class="ch-num neg">✕</div><div><div class="ch-text">Cable set too low</div><div class="ch-sub">Below chest height = rear delt row, not a face pull. Keep it at eye level.</div></div></div>
-  </div>`;
-}
-
-function renderPosture() {
-  return `
-  <div class="pnote">Posture correction is embedded into every session. The swapped exercises (hip abduction machine, glute bridge) are just as effective as the band work they replaced — and easier to load progressively.</div>
-  <div class="section-label">Issue 1 — Forward head & rounded shoulders</div>
-  <div class="card">
-    <span class="issue-badge">Cause: tight chest, weak mid traps, weak rear delts, weak deep neck flexors</span>
-    <table class="ptable">
-      <tr><th style="width:42%;">Fix</th><th>How & When</th></tr>
-      <tr><td>Cable face pulls</td><td>3 × 20 before every session. Elbows high, split the rope at your face.</td></tr>
-      <tr><td>Band pull-aparts</td><td>2 × 20 warm-up on all upper days. Targets rear delt and mid trap.</td></tr>
-      <tr><td>Wall angels</td><td>2 × 10 slow reps before every session. Lower back flat against wall.</td></tr>
-      <tr><td>Doorway chest stretch</td><td>2 × 30 sec after every upper push session. Releases tight pec minor.</td></tr>
-      <tr><td>Chin tucks (lying)</td><td>3 × 10 daily. Lying flat, tuck chin without lifting head.</td></tr>
-      <tr><td>Row:Press ratio</td><td>Pulling volume exceeds pushing 1.2:1 in this program intentionally.</td></tr>
-    </table>
-  </div>
-  <div class="section-label">Issue 2 — Knock knees (valgus)</div>
-  <div class="card">
-    <span class="issue-badge">Cause: weak glute medius, tight hip adductors pulling knees inward under load</span>
-    <table class="ptable">
-      <tr><th style="width:42%;">Fix</th><th>How & When</th></tr>
-      <tr><td>Hip abduction machine</td><td>3 × 15–20 before every leg session. Slow and controlled.</td></tr>
-      <tr><td>Glute bridge (barbell)</td><td>3 × 15 before leg sessions. Drives glute activation and hip extension.</td></tr>
-      <tr><td>Bulgarian split squat</td><td>Every leg day. Unilateral — corrects left-right imbalance.</td></tr>
-      <tr><td>Hip adductor stretch</td><td>2 × 30 sec each side after every leg session.</td></tr>
-      <tr><td>Leg press cue</td><td>"Push knees out, feet flat, drive through the heel." Every rep.</td></tr>
-    </table>
-  </div>
-  <div class="section-label">Warm-up every session (7 min)</div>
-  <div class="card">
-    <div class="ch-row"><div class="ch-num pos">1</div><div><div class="ch-text">Wall angels — 2 × 10</div><div class="ch-sub">Back flat on wall, arms slide up and down</div></div></div>
-    <div class="ch-row"><div class="ch-num pos">2</div><div><div class="ch-text">Band pull-aparts — 2 × 20</div><div class="ch-sub">Upper days only. Arms straight, pull band to chest.</div></div></div>
-    <div class="ch-row"><div class="ch-num pos">3</div><div><div class="ch-text">Cable face pulls — 2 × 20</div><div class="ch-sub">Light weight. Every session. See Face Pull tab.</div></div></div>
-    <div class="ch-row"><div class="ch-num pos">4</div><div><div class="ch-text">Chin tucks — 2 × 10</div><div class="ch-sub">Every session</div></div></div>
-    <div class="ch-row"><div class="ch-num pos">5</div><div><div class="ch-text">Hip abduction machine + glute bridge — 3 × 15</div><div class="ch-sub">Lower sessions only</div></div></div>
-  </div>`;
-}
-
-function renderCardio() {
-  return `
-  <div class="pnote">Cardio is structured deliberately. Type, timing and intensity are chosen to maximise fat loss without breaking down muscle. Always lift first — cardio after.</div>
-  <div class="section-label">Phase 1 — 3 sessions per week</div>
-  <div class="card">
-    <div class="crow">
-      <div class="ctag" style="background:#0d2b1a;color:#4ade80;">Mon/Tue</div>
-      <div class="cinfo"><div class="ct">LISS — Incline treadmill walk</div><div class="cs">25–30 min after lifting · 5–6 km/h · Incline 8–12% · HR 120–135 bpm · Burns fat without spiking cortisol.</div></div>
-    </div>
-    <div class="crow">
-      <div class="ctag" style="background:#2b1508;color:#fb923c;">Thu</div>
-      <div class="cinfo"><div class="ct">HIIT — Stationary bike</div><div class="cs">15–20 min after upper B · 30 sec all-out, 90 sec easy · 6–8 rounds · Boosts metabolism for 24 hrs. Bike protects your knees.</div></div>
-    </div>
-    <div class="crow">
-      <div class="ctag" style="background:#0d1b2b;color:#60a5fa;">Wed/Sat</div>
-      <div class="cinfo"><div class="ct">LISS — Outdoor walk</div><div class="cs">30–35 min · Fasted morning preferred · Conversational pace · Low cortisol, accelerates fat loss on rest days.</div></div>
-    </div>
-  </div>
-  <div class="section-label">Phase 2 — 2 sessions per week</div>
-  <div class="card">
-    <div class="crow">
-      <div class="ctag" style="background:#0d2b1a;color:#4ade80;">After upper</div>
-      <div class="cinfo"><div class="ct">LISS — Incline treadmill walk</div><div class="cs">20 min · Maintains cardio health, keeps fat gain minimal. Not aggressive burning.</div></div>
-    </div>
-    <div class="crow">
-      <div class="ctag" style="background:#0d1b2b;color:#60a5fa;">Rest day</div>
-      <div class="cinfo"><div class="ct">Outdoor walk</div><div class="cs">30 min easy · Too much cardio during bulk eats the surplus you need for muscle growth.</div></div>
-    </div>
-  </div>
-  <div class="section-label">Never do</div>
-  <div class="card">
-    <div class="ch-row"><div class="ch-num neg">✕</div><div><div class="ch-text">Long distance running</div><div class="ch-sub">Breaks down muscle, spikes cortisol, works directly against your goal</div></div></div>
-    <div class="ch-row"><div class="ch-num neg">✕</div><div><div class="ch-text">HIIT on or the day before leg sessions</div><div class="ch-sub">Kills leg performance — your most important sessions for lower body</div></div></div>
-    <div class="ch-row"><div class="ch-num neg">✕</div><div><div class="ch-text">Cardio before lifting</div><div class="ch-sub">Always lift first. Cardio after. Pre-fatigue ruins your training quality.</div></div></div>
-  </div>`;
-}
-
-function renderRules() {
-  const rules = [
-    { t:"Log every set, every session", s:"Weight and reps. No log = no progressive overload = no growth." },
-    { t:"Beat last week on every compound lift", s:"+1 rep or +2.5 kg. This is the only mechanism that builds muscle." },
-    { t:"7 min posture warm-up before every session", s:"Wall angels → band pull-aparts → face pulls → chin tucks. Every single time." },
-    { t:"175 g protein every day — including rest days", s:"Muscle is built on rest days. Missing protein on off days is one of the most common mistakes." },
-    { t:"Sleep 7–9 hours", s:"Growth hormone releases during deep sleep. Poor sleep raises cortisol and causes belly fat." },
-    { t:"Weigh every Sunday morning, fasted", s:"Phase 1: drop 0.3–0.5 kg/week. Phase 2: gain 0.3–0.4 kg/week max." },
-    { t:"Progress photo every 4 weeks, same lighting", s:"Front, side, back. Same spot, same time of day. Scale lies — photos don't." },
-    { t:"Rest 90–120 sec between compound sets", s:"60 sec for isolation. Full rest lets you actually hit target rep ranges." },
-    { t:"Last 2 reps of every set must be genuinely hard", s:"If you finish and could do 4 more easily, the weight is too light. Train close to failure." },
-    { t:"Never skip a pull session for a push session", s:"Your posture gets worse every time you do this. Pulls are higher priority for you." }
-  ];
-  let html = `<div class="section-label">Non-negotiable coaching rules</div><div class="card">`;
-  rules.forEach((r, i) => {
-    html += `<div class="ch-row">
-      <div class="ch-num">${i+1}</div>
-      <div><div class="ch-text">${r.t}</div><div class="ch-sub">${r.s}</div></div>
-    </div>`;
-  });
-  html += `</div>`;
-  return html;
-}
-
-// ============================================================
-//  HISTORY SCREEN
-// ============================================================
-function renderHistory() {
-  const logs = getAllLogs();
-  let html = `<div class="screen active" id="screen-history">`;
-  html += `<div style="font-size:18px;font-weight:700;margin-bottom:14px;">Workout History</div>`;
-
-  if (logs.length === 0) {
-    html += `<div class="history-empty">No workouts logged yet.<br>Start training to see history here.</div>`;
-    html += `</div>`;
-    return html;
-  }
-
-  logs.forEach(({ dateStr, data }) => {
-    const d = new Date(dateStr + 'T00:00:00');
-    const dayIdx = dayForDate(d);
-    const phase = data._meta ? data._meta.phase : 0;
-    const day = PHASES[phase] ? PHASES[phase].days[dayIdx] : PHASES[0].days[dayIdx];
-    const exKeys = Object.keys(data).filter(k => k.startsWith('ex_'));
-    const totalSets = exKeys.reduce((acc, k) => acc + (data[k].sets || []).length, 0);
-    const doneSets = exKeys.reduce((acc, k) => acc + (data[k].sets || []).filter(s => s.done).length, 0);
-    const isOpen = expandedHist === dateStr;
-
-    const daysArr = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const niceDateMain = daysArr[d.getDay()] + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
-
-    html += `<div class="hist-day">
-      <div class="hist-day-header" onclick="toggleHist('${dateStr}')">
-        <div>
-          <div class="hist-day-date">${niceDateMain}</div>
-          <div class="hist-day-type">${day.l} — ${day.t}</div>
-        </div>
-        <div class="hist-day-meta">
-          <div class="hist-day-count">${doneSets}/${totalSets} sets done</div>
-          <div class="hist-day-sets">${exKeys.length} exercises · ${isOpen ? '▲' : '▼'}</div>
-        </div>
-      </div>
-      <div class="hist-expand ${isOpen ? 'open' : ''}">
-        <button class="del-btn" onclick="event.stopPropagation();confirmDeleteLog('${dateStr}')">Delete</button>`;
-
-    exKeys.forEach(k => {
-      const ei = parseInt(k.replace('ex_', ''));
-      const exData = data[k];
-      const exName = day.ex && day.ex[ei] ? day.ex[ei].n : 'Exercise ' + (ei + 1);
-      html += `<div class="hist-ex">
-        <div class="hist-ex-name">${exName}</div>`;
-      (exData.sets || []).forEach((s, si) => {
-        html += `<div class="hist-set-row">
-          <span class="hist-set-chip ${s.done ? 'done' : ''}">Set ${si+1}: ${s.kg ? s.kg + ' kg' : '—'} × ${s.reps || '—'} reps${s.done ? ' ✓' : ''}</span>
-        </div>`;
-      });
-      if (exData.comment) html += `<div class="hist-comment">💬 ${exData.comment}</div>`;
-      html += `</div>`;
-    });
-
-    html += `</div></div>`;
-  });
-
-  html += `</div>`;
-  return html;
-}
-
-function toggleHist(dateStr) {
-  expandedHist = expandedHist === dateStr ? null : dateStr;
-  renderContent();
-}
-
-function confirmDeleteLog(dateStr) {
-  if (confirm('Delete this workout log?')) {
-    deleteLog(dateStr);
-    if (expandedHist === dateStr) expandedHist = null;
-    renderContent();
+  if (streak % 5 === 0) {
+    alert("🏆 5 Day Streak! You're ahead of 95% people.");
   }
 }
 
-// ============================================================
-//  STATS SCREEN
-// ============================================================
-function renderStats() {
-  const logs = getAllLogs();
-  let html = `<div class="screen active" id="screen-stats">`;
-  html += `<div style="font-size:18px;font-weight:700;margin-bottom:14px;">Stats & PRs</div>`;
-
-  // Summary metrics
-  const totalWorkouts = logs.filter(l => {
-    const dayIdx = dayForDate(new Date(l.dateStr + 'T00:00:00'));
-    const phase = l.data._meta ? l.data._meta.phase : 0;
-    return !PHASES[phase].days[dayIdx].rst;
-  }).length;
-
-  const totalSets = logs.reduce((acc, { data }) => {
-    return acc + Object.keys(data).filter(k => k.startsWith('ex_')).reduce((a, k) => a + (data[k].sets || []).length, 0);
-  }, 0);
-
-  // Streak calc
-  let streak = 0;
-  const today = new Date(); today.setHours(0,0,0,0);
-  for (let i = 0; i < 60; i++) {
-    const d = new Date(today); d.setDate(d.getDate() - i);
-    const ds = fmtDate(d);
-    const dayIdx = dayForDate(d);
-    const isRest = PHASES[0].days[dayIdx].rst;
-    if (isRest) continue;
-    if (logs.find(l => l.dateStr === ds)) streak++;
-    else break;
-  }
-
-  html += `<div class="stats-grid">
-    <div class="stat-card"><div class="stat-label">Workouts Logged</div><div class="stat-value">${totalWorkouts}</div></div>
-    <div class="stat-card"><div class="stat-label">Total Sets</div><div class="stat-value">${totalSets}</div></div>
-    <div class="stat-card"><div class="stat-label">Current Streak</div><div class="stat-value">${streak}<span class="stat-unit"> days</span></div></div>
-    <div class="stat-card"><div class="stat-label">Weeks Active</div><div class="stat-value">${Math.max(1, Math.ceil(totalWorkouts/5))}</div></div>
-  </div>`;
-
-  // PRs (max weight per exercise)
-  html += `<div class="section-label">Personal Records (max weight logged)</div>`;
-
-  const prMap = {};
-  logs.forEach(({ data, dateStr }) => {
-    const d = new Date(dateStr + 'T00:00:00');
-    const dayIdx = dayForDate(d);
-    const phase = data._meta ? data._meta.phase : 0;
-    const day = PHASES[phase] ? PHASES[phase].days[dayIdx] : null;
-    if (!day || day.rst) return;
-    Object.keys(data).filter(k => k.startsWith('ex_')).forEach(k => {
-      const ei = parseInt(k.replace('ex_', ''));
-      const exName = day.ex && day.ex[ei] ? day.ex[ei].n : null;
-      if (!exName) return;
-      const maxKg = Math.max(...(data[k].sets || []).map(s => parseFloat(s.kg) || 0));
-      if (maxKg > 0 && (!prMap[exName] || maxKg > prMap[exName])) prMap[exName] = maxKg;
-    });
-  });
-
-  const prEntries = Object.entries(prMap).sort((a,b) => b[1]-a[1]);
-  if (prEntries.length === 0) {
-    html += `<div class="card"><div class="card-sub">No PRs yet — start logging sets with weights to track records.</div></div>`;
-  } else {
-    html += `<div class="card pr-list">`;
-    prEntries.forEach(([ex, kg]) => {
-      html += `<div class="pr-row">
-        <div class="pr-ex">${ex}</div>
-        <div class="pr-val">${kg} kg 🏆</div>
-      </div>`;
-    });
-    html += `</div>`;
-  }
-
-  // Last 14 day activity dots
-  html += `<div class="section-label">Last 14 days</div><div class="card">`;
-  html += `<div class="streak-bar">`;
-  for (let i = 13; i >= 0; i--) {
-    const d = new Date(today); d.setDate(d.getDate() - i);
-    const ds = fmtDate(d);
-    const dayIdx = dayForDate(d);
-    const isRest = PHASES[0].days[dayIdx].rst;
-    const hasLog = !!logs.find(l => l.dateStr === ds);
-    html += `<div class="streak-dot ${isRest ? 'rest' : hasLog ? 'done' : ''}" title="${ds}"></div>`;
-  }
-  html += `</div>
-    <div style="display:flex;gap:16px;margin-top:10px;font-size:11px;color:var(--text3);">
-      <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--accent);vertical-align:middle;margin-right:4px;"></span>Trained</span>
-      <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--border);vertical-align:middle;margin-right:4px;"></span>Missed</span>
-      <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--bg3);border:1px solid var(--border2);vertical-align:middle;margin-right:4px;"></span>Rest day</span>
-    </div>
-  </div>`;
-
-  html += `</div>`;
-  return html;
+function analyseWorkout() {
+  alert("\n📊 Analysis:\n\nVolume: 7/10\nRecovery: 6/10\n\n👉 Add 1 compound lift\n👉 Reduce junk volume\n👉 Improve progressive overload\n");
 }
-
-// ============================================================
-//  INIT
-// ============================================================
-window._schedPhase = 0;
-window._schedDay = 0;
-renderContent();
 </script>
+
 </body>
 </html>
