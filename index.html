@@ -639,6 +639,47 @@ body::before {
   letter-spacing: 0.04em;
   margin-bottom: 16px;
 }
+
+/* WORKOUT DONE BANNER */
+.workout-done-banner {
+  background: linear-gradient(135deg, rgba(57,217,138,0.12) 0%, rgba(57,217,138,0.04) 100%);
+  border: 1px solid rgba(57,217,138,0.35);
+  border-radius: var(--radius);
+  padding: 22px 18px;
+  margin-bottom: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.4s ease;
+}
+.workout-done-banner::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+}
+.wdb-icon { font-size: 44px; margin-bottom: 8px; line-height: 1; }
+.wdb-title { font-family: var(--font-display); font-size: 26px; color: var(--green); letter-spacing: 0.06em; margin-bottom: 6px; }
+.wdb-sub { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+/* LAST WEEK HINT */
+.lw-hint {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700;
+  color: var(--orange);
+  background: var(--orange-bg);
+  border: 1px solid rgba(255,159,67,0.25);
+  border-radius: 7px;
+  padding: 3px 9px;
+  margin-top: 5px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+.lw-hint-pr {
+  color: var(--gold);
+  background: rgba(255,211,42,0.08);
+  border-color: rgba(255,211,42,0.25);
+}
+.lw-label { font-size: 9px; color: var(--text3); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-right: 2px; font-family: var(--font-body); }
 </style>
 </head>
 <body>
@@ -1236,6 +1277,69 @@ function renderContent() {
 // ============================================================
 //  LOG SCREEN
 // ============================================================
+
+// Returns the max kg logged for a given exercise name across all history.
+// Looks at logs from the past ~8 days to find the "last week" performance.
+function getLastWeekMax(exName, currentDateStr) {
+  const current = new Date(currentDateStr + 'T00:00:00');
+  let bestKg = null;
+  let bestReps = null;
+  // Check logs from 4 to 10 days ago to capture "last week same session"
+  for (let i = 4; i <= 10; i++) {
+    const d = new Date(current);
+    d.setDate(d.getDate() - i);
+    const ds = fmtDate(d);
+    const log = loadLog(ds);
+    if (!log) continue;
+    // Check every exercise slot in that log
+    Object.keys(log).forEach(key => {
+      if (!key.startsWith('ex_')) return;
+      const exData = log[key];
+      if (!exData || !exData.sets) return;
+      // Try to match exercise name via _meta exName — we store by index,
+      // so we match by looking at the phase day exercises
+      // We'll check all sets: if any set has data, look for name match via day
+      // Since we don't store the name per set, we use the day's exercise list
+      const meta = log._meta;
+      if (!meta) return;
+      const phaseIdx = meta.phase !== undefined ? meta.phase : 0;
+      const dayOfLog = new Date(ds + 'T00:00:00');
+      const dayIdx = dayForDate(dayOfLog);
+      const dayExList = PHASES[phaseIdx] && PHASES[phaseIdx].days[dayIdx] && PHASES[phaseIdx].days[dayIdx].ex;
+      if (!dayExList) return;
+      const slotIdx = parseInt(key.replace('ex_', ''));
+      const slotEx = dayExList[slotIdx];
+      if (!slotEx) return;
+      // Fuzzy match: same exercise name (case-insensitive, ignore parenthetical differences)
+      const normalize = s => s.toLowerCase().replace(/\s*\(.*?\)\s*/g,'').trim();
+      if (normalize(slotEx.n) !== normalize(exName)) return;
+      // Find max weight in this slot
+      exData.sets.forEach(set => {
+        const kg = parseFloat(set.kg);
+        const reps = parseInt(set.reps);
+        if (!isNaN(kg) && kg > 0) {
+          if (bestKg === null || kg > bestKg || (kg === bestKg && reps > (bestReps || 0))) {
+            bestKg = kg;
+            bestReps = isNaN(reps) ? null : reps;
+          }
+        }
+      });
+    });
+  }
+  return bestKg !== null ? { kg: bestKg, reps: bestReps } : null;
+}
+
+// Check if every set in every exercise of the current day log is ticked done
+function isWorkoutComplete(saved, day) {
+  if (!day.ex || day.ex.length === 0) return false;
+  return day.ex.every((ex, ei) => {
+    const exKey = 'ex_' + ei;
+    const exData = saved[exKey];
+    if (!exData || !exData.sets || exData.sets.length === 0) return false;
+    return exData.sets.every(s => s.done);
+  });
+}
+
 function renderLog() {
   const date = getLogDate();
   const dateStr = fmtDate(date);
@@ -1268,19 +1372,55 @@ function renderLog() {
     html += `</div>`; return html;
   }
 
+  // Check if workout is fully done
+  const workoutDone = isWorkoutComplete(saved, day);
+
   html += `<div class="log-workout-header">
-    <div class="log-day-type">${day.l} — ${day.t}</div>
+    <div class="log-day-type">${day.l} — ${day.t}${workoutDone ? ' <span style="color:var(--green);font-size:18px;">✓</span>' : ''}</div>
     <div class="log-day-focus">${day.focus} · ${day.sub}</div>
   </div>`;
+
+  // Show done banner if all sets completed
+  if (workoutDone) {
+    const totalSets = day.ex.reduce((acc, ex, ei) => {
+      const exData = saved['ex_' + ei];
+      return acc + (exData && exData.sets ? exData.sets.length : 0);
+    }, 0);
+    html += `<div class="workout-done-banner">
+      <div class="wdb-icon">🏆</div>
+      <div class="wdb-title">WORKOUT DONE</div>
+      <div class="wdb-sub">${totalSets} sets completed · ${day.ex.length} exercises · Good work, hit the protein.</div>
+    </div>`;
+  }
 
   day.ex.forEach((ex, ei) => {
     const exKey = 'ex_' + ei;
     const exData = saved[exKey] || { sets: [{ kg: '', reps: '', done: false }], comment: '' };
-    html += `<div class="log-ex-card">
+
+    // Get last week's best for this exercise
+    const lw = getLastWeekMax(ex.n, dateStr);
+    let lwHtml = '';
+    if (lw) {
+      // Check if today's best already beats last week
+      let todayBest = null;
+      exData.sets.forEach(s => {
+        const kg = parseFloat(s.kg);
+        if (!isNaN(kg) && kg > 0 && (todayBest === null || kg > todayBest)) todayBest = kg;
+      });
+      const isPR = todayBest !== null && todayBest > lw.kg;
+      lwHtml = `<div class="${isPR ? 'lw-hint lw-hint-pr' : 'lw-hint'}">
+        ${isPR ? '🏆' : '📅'} <span class="lw-label">last wk</span>${lw.kg} kg${lw.reps ? ' × ' + lw.reps : ''}${isPR ? ' · NEW PR!' : ''}
+      </div>`;
+    }
+
+    const allSetsDone = exData.sets.length > 0 && exData.sets.every(s => s.done);
+
+    html += `<div class="log-ex-card" style="${allSetsDone ? 'border-color:rgba(57,217,138,0.3);' : ''}">
       <div class="log-ex-header">
-        <div>
-          <div class="log-ex-name">${ex.n}${tagBadge(ex.tag)}</div>
+        <div style="flex:1;">
+          <div class="log-ex-name">${ex.n}${tagBadge(ex.tag)}${allSetsDone ? ' <span style="color:var(--green);font-size:13px;">✓</span>' : ''}</div>
           <div class="log-ex-target">${ex.s}${ex.note ? ' · ' + ex.note : ''}</div>
+          ${lwHtml}
         </div>
       </div>
       <div class="log-sets-area">
@@ -1303,7 +1443,7 @@ function renderLog() {
     </div>`;
   });
 
-  html += `<button class="save-btn" onclick="saveWorkout()">SAVE WORKOUT</button>
+  html += `<button class="save-btn" onclick="saveWorkout()">${workoutDone ? '✅ SAVE & DONE' : 'SAVE WORKOUT'}</button>
     <div class="save-success" id="save-success">✅ Workout saved!</div>
   </div>`;
   return html;
@@ -1329,8 +1469,8 @@ function toggleSetDone(ei, si) {
   while (data[exKey].sets.length <= si) data[exKey].sets.push({ kg:'', reps:'', done:false });
   data[exKey].sets[si].done = !data[exKey].sets[si].done;
   saveLog(dateStr, data);
-  const btn = document.querySelector(`#setrow_${ei}_${si} .set-done-btn`);
-  if (btn) btn.classList.toggle('done', data[exKey].sets[si].done);
+  // Re-render fully so workout-done banner and green borders update live
+  renderContent();
 }
 function addSet(ei) {
   const { dateStr, data } = getCurrentLogData();
