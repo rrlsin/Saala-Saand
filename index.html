@@ -2016,6 +2016,47 @@ function renderSettings() {
     </div>`;
   }
 
+  // Backup & Restore
+  const logCount = getAllLogs().length;
+  html += `<div class="settings-section">
+    <div class="settings-section-title">💾 Backup & Restore</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px;">
+      Your logs live in this browser's storage. Export a backup before updating the app file — then import it after. Takes 5 seconds.
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button onclick="exportLogs()" style="
+        width:100%;padding:14px;
+        background:var(--accent);border:none;border-radius:12px;
+        color:#000;font-size:14px;font-weight:800;cursor:pointer;
+        font-family:var(--font-display);letter-spacing:0.06em;
+        box-shadow:0 4px 20px rgba(200,255,0,0.2);
+        transition:all 0.2s;
+      ">⬇ EXPORT LOGS (${logCount} session${logCount !== 1 ? 's' : ''})</button>
+      <button onclick="document.getElementById('import-input').click()" style="
+        width:100%;padding:13px;
+        background:var(--bg2);border:1px solid var(--border2);border-radius:12px;
+        color:var(--text);font-size:14px;font-weight:700;cursor:pointer;
+        font-family:var(--font-body);
+        transition:all 0.2s;
+      ">⬆ Import Backup</button>
+      <input type="file" id="import-input" accept=".json" style="display:none;" onchange="importLogs(event)">
+    </div>
+    <div id="import-status" style="margin-top:10px;font-size:13px;font-weight:600;"></div>
+    <div style="margin-top:14px;background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">How to update without losing data</div>
+      ${[
+        ['1','Export your logs using the button above — a .json file will download.'],
+        ['2','Replace the app HTML file with the new version.'],
+        ['3','Open the new file in the same browser.'],
+        ['4','Go to Settings → Import Backup and select your .json file.'],
+        ['5','All your sessions are restored instantly.'],
+      ].map(([n,t]) => `<div style="display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--green-bg);border:1px solid #0e3020;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--green);flex-shrink:0;font-family:var(--font-mono);">${n}</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.5;padding-top:2px;">${t}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+
   // About
   html += `<div class="settings-section">
     <div class="settings-section-title">About</div>
@@ -2100,6 +2141,61 @@ function updateNotifDot() {
   const s = getSettings();
   const dot = document.getElementById('notif-dot');
   if (dot) dot.style.display = s.notifEnabled ? 'block' : 'none';
+}
+
+// ============================================================
+//  BACKUP & RESTORE
+// ============================================================
+function exportLogs() {
+  const logs = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && (k.startsWith('ss_log_') || k === 'ss_settings')) {
+      logs[k] = localStorage.getItem(k);
+    }
+  }
+  const count = Object.keys(logs).filter(k => k.startsWith('ss_log_')).length;
+  if (count === 0) { alert('No logs to export yet!'); return; }
+  const blob = new Blob([JSON.stringify(logs, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const today = new Date().toISOString().split('T')[0];
+  a.href = url; a.download = `saala-saand-backup-${today}.json`;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function importLogs(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const status = document.getElementById('import-status');
+    try {
+      const data = JSON.parse(e.target.result);
+      const keys = Object.keys(data);
+      if (!keys.some(k => k.startsWith('ss_log_'))) {
+        status.style.color = 'var(--red)';
+        status.textContent = '✕ Invalid backup file — no logs found.';
+        return;
+      }
+      let imported = 0;
+      keys.forEach(k => {
+        if (k.startsWith('ss_log_') || k === 'ss_settings') {
+          localStorage.setItem(k, data[k]);
+          if (k.startsWith('ss_log_')) imported++;
+        }
+      });
+      status.style.color = 'var(--green)';
+      status.textContent = `✓ Restored ${imported} session${imported !== 1 ? 's' : ''} successfully!`;
+      setTimeout(() => { renderContent(); }, 1200);
+    } catch(err) {
+      status.style.color = 'var(--red)';
+      status.textContent = "✕ Could not read file. Make sure it's a valid backup.";
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
 }
 
 // ============================================================
